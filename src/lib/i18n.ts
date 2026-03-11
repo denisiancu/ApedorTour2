@@ -66,7 +66,7 @@ export const translations = {
     },
     fleet: {
       title: 'Flota Noastra',
-      subtitle: 'Mercedes V-Class - standardul in transportul VIP',
+      subtitle: 'Vehicule Mercedes premium pentru fiecare ocazie',
       seats: 'Locuri',
       luggage: 'Bagaje',
       features: 'Caracteristici Premium',
@@ -75,7 +75,16 @@ export const translations = {
       wifi: 'Wi-Fi gratuit',
       water: 'Apa pentru pasageri',
       usbCharging: 'Incarcatoare USB',
-      tintedWindows: 'Geamuri fumurii'
+      tintedWindows: 'Geamuri fumurii',
+      sprinterSubtitle: 'Premium Group Transport',
+      sprinterSeats: '19',
+      sprinterLuggage: '10+',
+      sprinterLeather: 'Scaune confortabile',
+      sprinterClimate: 'Climatizare automata',
+      sprinterWifi: 'Wi-Fi gratuit',
+      sprinterWater: 'Apa pentru pasageri',
+      sprinterUsb: 'Incarcatoare USB',
+      sprinterSpace: 'Spatiu generos bagaje'
     },
     standards: {
       title: 'Standardele Noastre',
@@ -239,7 +248,7 @@ export const translations = {
     },
     fleet: {
       title: 'Our Fleet',
-      subtitle: 'Mercedes V-Class - the standard in VIP transport',
+      subtitle: 'Premium Mercedes vehicles for every occasion',
       seats: 'Seats',
       luggage: 'Luggage',
       features: 'Premium Features',
@@ -248,7 +257,16 @@ export const translations = {
       wifi: 'Free Wi-Fi',
       water: 'Complimentary water',
       usbCharging: 'USB chargers',
-      tintedWindows: 'Tinted windows'
+      tintedWindows: 'Tinted windows',
+      sprinterSubtitle: 'Premium Group Transport',
+      sprinterSeats: '19',
+      sprinterLuggage: '10+',
+      sprinterLeather: 'Comfortable seating',
+      sprinterClimate: 'Climate control',
+      sprinterWifi: 'Free Wi-Fi',
+      sprinterWater: 'Complimentary water',
+      sprinterUsb: 'USB chargers',
+      sprinterSpace: 'Generous luggage space'
     },
     standards: {
       title: 'Our Standards',
