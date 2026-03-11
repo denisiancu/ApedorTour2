@@ -3,10 +3,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const aboutImages = [
-  '/DJI_20260214172244_0534_D_DJD.JPG',
-  '/DJI_20260214172405_0539_D_DJD.JPG',
-  '/DJI_20260214172958_0547_D_DJD.JPG',
-  '/DJI_20260214173010_0549_D_DJD.JPG',
+  '/aboutus1.JPG',
+  '/aboutus2.jpg',
 ];
 
 export default function AboutUs() {
