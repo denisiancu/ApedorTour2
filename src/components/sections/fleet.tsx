@@ -128,7 +128,7 @@ export default function Fleet() {
                   <Users className="w-6 h-6 text-[#e3ca86]" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">7</p>
+                  <p className="text-2xl font-bold text-white">6</p>
                   <p className="text-sm text-[#F5F5F5]/70">{t.fleet.seats}</p>
                 </div>
               </div>
