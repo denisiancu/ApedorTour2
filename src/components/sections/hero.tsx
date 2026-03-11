@@ -3,10 +3,8 @@ import { ChevronDown, ChevronLeft, ChevronRight, Film } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import QuoteModal from '@/components/QuoteModal';
 
-const PHOTO_DURATION = 4000;
-const VIDEO_DURATION = 10000;
+const PHOTO_DURATION = 3000;
 const MOTTO_INTERVAL = 4000;
-const PRELOAD_DELAY = 300;
 
 const mottosRo = [
   'Excelenta in fiecare calatorie',
@@ -51,12 +49,12 @@ slides.forEach((s, i) => {
 });
 
 function embedUrl(videoId: string) {
-  return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1`;
+  return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&iv_load_policy=3&enablejsapi=1`;
 }
 
-function ytCmd(iframe: HTMLIFrameElement | null, func: string) {
+function ytCmd(iframe: HTMLIFrameElement | null, func: string, args: (string | number | boolean)[] = []) {
   iframe?.contentWindow?.postMessage(
-    JSON.stringify({ event: 'command', func, args: [] }),
+    JSON.stringify({ event: 'command', func, args }),
     '*'
   );
 }
@@ -66,22 +64,60 @@ export default function Hero() {
   const [paused, setPaused] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [mottoIdx, setMottoIdx] = useState(0);
-  const [preloaded, setPreloaded] = useState(false);
   const { t, language } = useLanguage();
   const iframes = useRef<(HTMLIFrameElement | null)[]>([]);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const mottos = language === 'ro' ? mottosRo : mottosEn;
   const slide = slides[active];
+  const activeRef = useRef(active);
+  activeRef.current = active;
 
   useEffect(() => {
-    const id = setTimeout(() => setPreloaded(true), PRELOAD_DELAY);
-    return () => clearTimeout(id);
+    const handler = (e: MessageEvent) => {
+      if (typeof e.data !== 'string') return;
+      let data: Record<string, unknown>;
+      try {
+        data = JSON.parse(e.data);
+      } catch {
+        return;
+      }
+
+      let state: number | null = null;
+      if (data.event === 'onStateChange' && typeof data.info === 'number') {
+        state = data.info;
+      } else if (
+        data.event === 'infoDelivery' &&
+        typeof data.info === 'object' &&
+        data.info !== null &&
+        typeof (data.info as Record<string, unknown>).playerState === 'number'
+      ) {
+        state = (data.info as Record<string, number>).playerState;
+      }
+
+      if (state === 0) {
+        const vidIdx = iframes.current.findIndex(el => el?.contentWindow === e.source);
+        if (vidIdx >= 0) {
+          const slideIdx = videoSlideIndex[vidIdx];
+          if (activeRef.current === slideIdx) {
+            setActive((slideIdx + 1) % slides.length);
+          }
+        }
+      }
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const registerListening = useCallback((idx: number) => {
+    const el = iframes.current[idx];
+    if (!el?.contentWindow) return;
+    el.contentWindow.postMessage(JSON.stringify({ event: 'listening' }), '*');
   }, []);
 
   useEffect(() => {
     if (paused) return;
-    const ms = slide.kind === 'photo' ? PHOTO_DURATION : VIDEO_DURATION;
-    timer.current = setTimeout(() => setActive(p => (p + 1) % slides.length), ms);
+    if (slide.kind === 'video') return;
+    timer.current = setTimeout(() => setActive(p => (p + 1) % slides.length), PHOTO_DURATION);
     return () => clearTimeout(timer.current);
   }, [active, paused, slide.kind]);
 
@@ -89,9 +125,17 @@ export default function Hero() {
     videoIds.forEach((_, i) => {
       const el = iframes.current[i];
       if (!el) return;
-      ytCmd(el, active === videoSlideIndex[i] ? 'playVideo' : 'pauseVideo');
+      if (active === videoSlideIndex[i]) {
+        ytCmd(el, 'seekTo', [0, true]);
+        setTimeout(() => {
+          ytCmd(el, 'playVideo');
+          registerListening(i);
+        }, 150);
+      } else {
+        ytCmd(el, 'pauseVideo');
+      }
     });
-  }, [active]);
+  }, [active, registerListening]);
 
   useEffect(() => {
     const id = setInterval(
@@ -111,7 +155,8 @@ export default function Hero() {
   return (
     <>
       <div
-        className="relative h-screen w-full overflow-hidden bg-black"
+        className="relative w-full overflow-hidden bg-black"
+        style={{ height: '100vh', minHeight: '600px' }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -119,58 +164,63 @@ export default function Hero() {
           <div
             key={`p${i}`}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              active === photoSlideIndex[i] ? 'opacity-100 z-[1]' : 'opacity-0 z-0'
+              active === photoSlideIndex[i] ? 'opacity-100 z-[2]' : 'opacity-0 z-0'
             }`}
           >
             <img
               src={src}
               alt="ApeD'or Tour - Premium Chauffeur Services"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
+              style={{ display: 'block', width: '100%', height: '100%' }}
               loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : undefined}
             />
           </div>
         ))}
 
-        {preloaded &&
-          videoIds.map((id, i) => {
-            const isOn = active === videoSlideIndex[i];
-            return (
-              <div
-                key={`v${i}`}
-                className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${
-                  isOn ? 'opacity-100 z-[1]' : 'opacity-0 z-0 pointer-events-none'
-                }`}
-              >
-                <iframe
-                  ref={el => {
-                    iframes.current[i] = el;
-                  }}
-                  src={embedUrl(id)}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{
-                    width: 'max(177.78vh, 100vw)',
-                    height: 'max(100vh, 56.25vw)',
-                    border: 'none',
-                  }}
-                  allow="autoplay; encrypted-media"
-                  title={`ApeD'or Tour Video ${i + 1}`}
-                  loading="eager"
-                />
-              </div>
-            );
-          })}
+        {videoIds.map((id, i) => {
+          const isOn = active === videoSlideIndex[i];
+          return (
+            <div
+              key={`v${i}`}
+              className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${
+                isOn ? 'opacity-100 z-[2]' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              <iframe
+                ref={el => { iframes.current[i] = el; }}
+                src={embedUrl(id)}
+                onLoad={() => registerListening(i)}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                style={{
+                  width: 'max(177.78vh, 100vw)',
+                  height: 'max(100vh, 56.25vw)',
+                  border: 'none',
+                }}
+                allow="autoplay; encrypted-media"
+                title={`ApeD'or Tour Video ${i + 1}`}
+                loading="eager"
+              />
+            </div>
+          );
+        })}
 
-        <div className="absolute inset-0 bg-black/40 z-10" />
+        <div
+          className="absolute inset-0 z-[3] pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.05) 65%, rgba(0,0,0,0.35) 100%)',
+          }}
+        />
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-[4]">
           <div className="text-center px-6 space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-2xl tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>
               ApeD'or Tour
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 drop-shadow-md max-w-3xl mx-auto font-light tracking-wide">
+            <p className="text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto font-light tracking-wide" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
               {t.hero.tagline}
             </p>
-            <p className="text-lg text-gray-200 drop-shadow-md">
+            <p className="text-lg text-gray-200" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>
               {t.hero.subtitle}
             </p>
 
@@ -182,6 +232,7 @@ export default function Hero() {
                     className={`absolute inset-0 flex items-center justify-center text-[#e3ca86] text-lg md:text-xl italic font-light transition-opacity duration-700 ${
                       i === mottoIdx ? 'opacity-100' : 'opacity-0'
                     }`}
+                    style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}
                   >
                     {m}
                   </p>
@@ -208,20 +259,20 @@ export default function Hero() {
 
         <button
           onClick={prev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 bg-black/30 hover:bg-black/50 rounded-full transition text-white"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-[5] p-2 bg-black/30 hover:bg-black/50 rounded-full transition text-white"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={next}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 bg-black/30 hover:bg-black/50 rounded-full transition text-white"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-[5] p-2 bg-black/30 hover:bg-black/50 rounded-full transition text-white"
           aria-label="Next slide"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
 
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3">
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-3">
           <div className="flex gap-2">
             {videoIds.map((_, i) => (
               <button
@@ -258,7 +309,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[4] animate-bounce">
           <ChevronDown className="w-8 h-8 text-white" />
         </div>
       </div>
