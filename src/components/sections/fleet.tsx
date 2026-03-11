@@ -27,11 +27,11 @@ export default function Fleet() {
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative">
-            <div className="aspect-[4/3] relative rounded-xl overflow-hidden shadow-2xl">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl">
               <img
                 src="/DJI_20260214173010_0549_D_DJD.JPG"
                 alt="Mercedes V-Class"
-                className="w-full h-full object-cover"
+                className="w-full h-auto block"
                 loading="lazy"
               />
             </div>
