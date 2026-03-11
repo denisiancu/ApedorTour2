@@ -89,7 +89,7 @@ export default function WhatsAppContact() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
             <img
-              src="/Logo_Apedor_Tour_nou.png"
+              src="/HIGH_Quality_Apedor_Tour_Logo_No_Background2.png"
               alt="ApeD'or Tour"
               className="h-10 md:h-12 w-auto object-contain"
             />

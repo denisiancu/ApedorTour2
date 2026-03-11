@@ -28,7 +28,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/Logo_Apedor_Tour_nou.png"
+                src="/HIGH_Quality_Apedor_Tour_Logo_No_Background2.png"
                 alt="ApeD'or Tour"
                 className="h-14 w-auto object-contain"
               />
