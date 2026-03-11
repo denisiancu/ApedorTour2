@@ -215,9 +215,12 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center z-[4]">
           <div className="text-center px-6 space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>
-              ApeD'or Tour
-            </h1>
+            <img
+              src="/Apedor_Stylized_Text3.png"
+              alt="ApeD'or Tour"
+              className="mx-auto w-[280px] md:w-[380px] lg:w-[460px] h-auto drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)] select-none pointer-events-none"
+              draggable={false}
+            />
             <p className="text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto font-light tracking-wide" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
               {t.hero.tagline}
             </p>
