@@ -6,7 +6,7 @@ import QuoteModal from '@/components/QuoteModal';
 const VIDEO_ID = 'ny_3bztYHwI';
 const VIDEO_DURATION_MS = 55000;
 const PHOTO_CYCLE_DURATION_MS = 6000;
-const PHOTOS_DISPLAY_COUNT = 5;
+const PHOTOS_DISPLAY_COUNT = 4;
 const MOTTO_ROTATION_MS = 4000;
 
 const mottosRo = [
@@ -28,7 +28,6 @@ const mottosEn = [
 const photoSlides = [
   '/DJI_20260227124638_0081_D_DJD.JPG',
   '/DJI_20260214172405_0539_D_DJD.JPG',
-  '/DJI_20260227124309_0076_D_DJD_2.JPG',
   '/flota.jpg',
   '/DJI_20260227113009_0052_D_DJD.JPG'
 ];
