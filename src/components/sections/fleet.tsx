@@ -1,9 +1,39 @@
-import { Users, Briefcase, Check } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Users, Briefcase, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { OptimizedImage } from '@/components/OptimizedImage';
 
+const vClassPhotos = [
+  '/IMG_7138.JPG',
+  '/IMG_7140.JPG',
+  '/IMG_7146.JPG',
+  '/IMG_7173.JPG',
+];
+
+const CYCLE_INTERVAL = 2000;
+
 export default function Fleet() {
   const { t } = useLanguage();
+  const [activePhoto, setActivePhoto] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval>>();
+
+  useEffect(() => {
+    if (paused) return;
+    timerRef.current = setInterval(
+      () => setActivePhoto(p => (p + 1) % vClassPhotos.length),
+      CYCLE_INTERVAL
+    );
+    return () => clearInterval(timerRef.current);
+  }, [paused]);
+
+  const prev = useCallback(() => {
+    setActivePhoto(p => (p - 1 + vClassPhotos.length) % vClassPhotos.length);
+  }, []);
+
+  const next = useCallback(() => {
+    setActivePhoto(p => (p + 1) % vClassPhotos.length);
+  }, []);
 
   const vClassFeatures = [
     t.fleet.leatherSeats,
@@ -36,13 +66,53 @@ export default function Fleet() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl">
-              <OptimizedImage
-                src="/DJI_20260227124309_0076_D_DJD.JPG"
-                alt="Mercedes V-Class"
-                className="w-full h-auto block"
-              />
+          <div
+            className="relative"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="relative rounded-xl overflow-hidden shadow-2xl aspect-[3/4]">
+              {vClassPhotos.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`Mercedes V-Class interior ${i + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                    i === activePhoto ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              ))}
+
+              <button
+                onClick={prev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-black/40 hover:bg-black/60 rounded-full transition text-white"
+                aria-label="Previous photo"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-black/40 hover:bg-black/60 rounded-full transition text-white"
+                aria-label="Next photo"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                {vClassPhotos.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActivePhoto(i)}
+                    className={`rounded-full transition-all ${
+                      i === activePhoto
+                        ? 'bg-[#e3ca86] w-5 h-2'
+                        : 'bg-white/50 hover:bg-white/80 w-2 h-2'
+                    }`}
+                    aria-label={`Go to photo ${i + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
