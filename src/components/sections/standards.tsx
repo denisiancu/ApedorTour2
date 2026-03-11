@@ -73,7 +73,7 @@ export default function Standards() {
           </div>
           <div className="relative">
             <img
-              src="/DJI_20260214172405_0539_D_DJD.JPG"
+              src="/DJI_20260214172244_0534_D_DJD.JPG"
               alt="ApeD'or Tour - Premium Chauffeur Services"
               className="w-full rounded-xl shadow-2xl"
             />

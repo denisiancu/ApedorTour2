@@ -25,10 +25,10 @@ const mottosEn = [
 ];
 
 const photos = [
-  '/DJI_20260227124638_0081_D_DJD.JPG',
-  '/DJI_20260214172405_0539_D_DJD.JPG',
-  '/flota.jpg',
-  '/DJI_20260227113009_0052_D_DJD.JPG',
+  '/poza3.JPG',
+  '/poza4.JPG',
+  '/DJI_20260214172244_0534_D_DJD.JPG',
+  '/DJI_20260227124309_0076_D_DJD.JPG',
 ];
 
 const videoIds = ['D2Aah32TOWw', 'LQ6La5DFiM0', 'S-h7Y-B-D8M', 'dKbWlwHLSHc'];

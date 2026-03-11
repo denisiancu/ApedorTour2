@@ -29,7 +29,7 @@ export default function Fleet() {
           <div className="relative">
             <div className="relative rounded-xl overflow-hidden shadow-2xl">
               <img
-                src="/DJI_20260214173010_0549_D_DJD.JPG"
+                src="/DJI_20260227124309_0076_D_DJD.JPG"
                 alt="Mercedes V-Class"
                 className="w-full h-auto block"
                 loading="lazy"
