@@ -1,4 +1,4 @@
-import { CheckCircle, Shield, Car, Wifi } from 'lucide-react';
+import { CircleCheck as CheckCircle, Shield, Car, Wifi } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Standards() {
