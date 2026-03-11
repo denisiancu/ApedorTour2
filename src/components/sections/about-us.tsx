@@ -5,6 +5,8 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 const aboutImages = [
   '/aboutus1.JPG',
   '/aboutus2.jpg',
+  '/poza3.JPG',
+  '/poza4.JPG',
 ];
 
 export default function AboutUs() {
@@ -41,12 +43,12 @@ export default function AboutUs() {
             {aboutImages.map((image, index) => (
               <div
                 key={index}
-                className="relative rounded-lg overflow-hidden group"
+                className="relative rounded-lg overflow-hidden group aspect-[4/3]"
               >
                 <img
                   src={image}
                   alt={`ApeD'or Tour - Mercedes V-Class Premium Service ${index + 1}`}
-                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
