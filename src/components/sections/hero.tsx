@@ -173,6 +173,7 @@ export default function Hero() {
               className="w-full h-full object-cover object-center"
               style={{ display: 'block', width: '100%', height: '100%' }}
               loading={i === 0 ? 'eager' : 'lazy'}
+              decoding={i === 0 ? undefined : 'async'}
               fetchPriority={i === 0 ? 'high' : undefined}
             />
           </div>

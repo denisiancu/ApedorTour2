@@ -1,6 +1,7 @@
 import { Check, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { OptimizedImage } from '@/components/OptimizedImage';
 
 const aboutImages = [
   '/aboutus1.JPG',
@@ -45,11 +46,10 @@ export default function AboutUs() {
                 key={index}
                 className="relative rounded-lg overflow-hidden group aspect-[4/3]"
               >
-                <img
+                <OptimizedImage
                   src={image}
                   alt={`ApeD'or Tour - Mercedes V-Class Premium Service ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>

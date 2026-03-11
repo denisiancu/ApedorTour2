@@ -1,5 +1,6 @@
 import { CircleCheck as CheckCircle, Shield, Car, Wifi } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { OptimizedImage } from '@/components/OptimizedImage';
 
 export default function Standards() {
   const { t } = useLanguage();
@@ -72,7 +73,7 @@ export default function Standards() {
             })}
           </div>
           <div className="relative">
-            <img
+            <OptimizedImage
               src="/DJI_20260214172244_0534_D_DJD.JPG"
               alt="ApeD'or Tour - Premium Chauffeur Services"
               className="w-full rounded-xl shadow-2xl"

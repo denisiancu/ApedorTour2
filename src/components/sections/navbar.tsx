@@ -33,6 +33,8 @@ export default function Navbar() {
             src="/HIGH_Quality_Apedor_Tour_Logo_No_Background2.png"
             alt="ApeD'or Tour"
             className="h-16 md:h-20 w-auto object-contain"
+            loading="eager"
+            fetchPriority="high"
           />
         </a>
 

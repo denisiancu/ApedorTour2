@@ -1,5 +1,6 @@
 import { Users, Briefcase, Check } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { OptimizedImage } from '@/components/OptimizedImage';
 
 export default function Fleet() {
   const { t } = useLanguage();
@@ -28,11 +29,10 @@ export default function Fleet() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative">
             <div className="relative rounded-xl overflow-hidden shadow-2xl">
-              <img
+              <OptimizedImage
                 src="/DJI_20260227124309_0076_D_DJD.JPG"
                 alt="Mercedes V-Class"
                 className="w-full h-auto block"
-                loading="lazy"
               />
             </div>
           </div>

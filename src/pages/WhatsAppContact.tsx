@@ -92,6 +92,8 @@ export default function WhatsAppContact() {
               src="/HIGH_Quality_Apedor_Tour_Logo_No_Background2.png"
               alt="ApeD'or Tour"
               className="h-10 md:h-12 w-auto object-contain"
+              loading="eager"
+              decoding="async"
             />
           </a>
           <div className="flex items-center gap-4">

@@ -31,6 +31,8 @@ export default function Footer() {
                 src="/HIGH_Quality_Apedor_Tour_Logo_No_Background2.png"
                 alt="ApeD'or Tour"
                 className="h-14 w-auto object-contain"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <p className="text-[#F5F5F5] mb-6">
