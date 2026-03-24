@@ -23,13 +23,13 @@ const mottosEn = [
 ];
 
 const photos = [
-  '/poza3.JPG',
   '/poza4.JPG',
   '/DJI_20260214172244_0534_D_DJD.JPG',
+  '/poza3.JPG',
   '/DJI_20260227124309_0076_D_DJD.JPG',
 ];
 
-const videoIds = ['D2Aah32TOWw', 'LQ6La5DFiM0', 'S-h7Y-B-D8M', 'dKbWlwHLSHc'];
+const videoIds = ['LQ6La5DFiM0', 'S-h7Y-B-D8M', 'D2Aah32TOWw', 'dKbWlwHLSHc'];
 
 type Slide =
   | { kind: 'photo'; src: string; photoIdx: number }
