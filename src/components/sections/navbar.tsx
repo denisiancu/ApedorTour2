@@ -59,10 +59,10 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-white p-2"
+          className="md:hidden w-10 h-10 bg-[#e3ca86] hover:bg-[#d4bb77] rounded-full flex items-center justify-center text-black transition"
           aria-label="Toggle menu"
         >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
